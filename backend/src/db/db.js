@@ -9,7 +9,7 @@ function connectDB() {
         })
         .catch((err) => {
             console.log("MongoDB connection error:", err);
-        });
+        })
 }
 
 module.exports = connectDB;
