@@ -12,7 +12,7 @@ app.get("/", (req, res) => {
     res.send("Hello World");
 })
 
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', authRouter);
 app.use('/api/food', foodRoutes);
 
 module.exports = app;

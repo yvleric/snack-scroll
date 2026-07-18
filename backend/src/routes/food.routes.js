@@ -15,4 +15,10 @@ router.post('/',
     foodController.createFood)
 
 
+
+//* Get /api/food/list [protected]* //
+router.get("/",
+    authMiddleware.authUserMiddleware,
+    foodController.getFoodItems)
+
 module.exports = router

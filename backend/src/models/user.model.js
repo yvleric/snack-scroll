@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
     }
 },
     {
-        timestamps: ture
+        timestamps: true
     }
 )
 
