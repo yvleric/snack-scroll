@@ -10,5 +10,8 @@
     "mongoose": "^9.7.4",
     "multer": "^2.2.0",
     "uuid": "^14.0.1"
+  },
+  "scripts": {
+    "dev": "node --watch server.js"
   }
 }
