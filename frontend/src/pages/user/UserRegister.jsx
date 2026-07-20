@@ -1,8 +1,22 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../../styles/auth.css';
+import axios from 'axios';
 
 const UserRegister = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const firstName = e.target.firstName.value;
+    const lastName = e.target.lastName.value;
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+
+
+
+  }
+
   return (
     <div className="auth-container">
       <div className="auth-card">
