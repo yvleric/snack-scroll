@@ -1,8 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import '../../styles/auth.css';
-import { useNavigate } from 'react-router-dom';
+import '../../styles/auth-shared.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const FoodPartnerLogin = () => {
 
@@ -21,32 +20,30 @@ const FoodPartnerLogin = () => {
 
     console.log(response.data);
 
-    navigate("/create-food");
+    navigate("/create-food"); // Redirect to create food page after login
+
   };
 
-
-
   return (
-    <div className="auth-container">
-      <div className="auth-card">
-        <div className="auth-header">
-          <h1>Partner Login</h1>
-          <p>Access your restaurant dashboard</p>
-        </div>
-        <form className="auth-form" onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="email">Business Email</label>
-            <input type="email" id="email" name="email" placeholder="contact@restaurant.com" />
+    <div className="auth-page-wrapper">
+      <div className="auth-card" role="region" aria-labelledby="partner-login-title">
+        <header>
+          <h1 id="partner-login-title" className="auth-title">Partner login</h1>
+          <p className="auth-subtitle">Access your dashboard and manage orders.</p>
+        </header>
+        <form className="auth-form" onSubmit={handleSubmit} noValidate>
+          <div className="field-group">
+            <label htmlFor="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="business@example.com" autoComplete="email" />
           </div>
-          <div className="form-group">
+          <div className="field-group">
             <label htmlFor="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="••••••••" />
+            <input id="password" name="password" type="password" placeholder="Password" autoComplete="current-password" />
           </div>
-          <button type="submit" className="auth-button">Log In to Dashboard</button>
+          <button className="auth-submit" type="submit">Sign In</button>
         </form>
-        <div className="auth-footer">
-          <p>Not partnered yet? <Link to="/food-partner/register">Register your restaurant</Link></p>
-          <p style={{ marginTop: '10px' }}><Link to="/user/login">Log in as a User</Link></p>
+        <div className="auth-alt-action">
+          New partner? <a href="/food-partner/register">Create an account</a>
         </div>
       </div>
     </div>

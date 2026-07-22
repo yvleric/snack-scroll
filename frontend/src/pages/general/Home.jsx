@@ -1,57 +1,63 @@
-import React, { useRef, useEffect } from 'react';
-import './Home.css';
-
-const MOCK_VIDEOS = [
-    {
-        id: 1,
-        url: " ",
-        storeName: "The Spicy Kitchen",
-        description: "Come taste our brand new fire-roasted chicken! We use a special blend of 12 spices and herbs. It is absolutely delicious and you will want to come back for more every single day."
-    },
-    {
-        id: 2,
-        url: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-        storeName: "Sweet Treats Bakery",
-        description: "Freshly baked chocolate chip cookies coming right out of the oven. Nothing beats the smell of warm chocolate on a Sunday morning."
-    },
-    {
-        id: 3,
-        url: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-        storeName: "Burger Joint",
-        description: "Our classic double cheeseburger with secret sauce. Grab yours now!"
-    }
-];
+import React, { useEffect, useState } from 'react'
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import '../../styles/reels.css'
+import ReelFeed from '../../components/ReelFeed'
 
 const Home = () => {
-    // We can use IntersectionObserver in the future to pause/play videos when they enter/leave the screen
-    // For now, we'll let them play, or just rely on autoplay muted loop
+    const [videos, setVideos] = useState([])
+    const navigate = useNavigate();
+    // Autoplay behavior is handled inside ReelFeed
+
+    useEffect(() => {
+        axios.get("http://localhost:3000/api/food", { withCredentials: true })
+            .then(response => {
+
+                console.log(response.data);
+
+                setVideos(response.data.foodItems)
+            })
+            .catch((error) => {
+                if (error.response && error.response.status === 401) {
+                    navigate('/register');
+                }
+            })
+    }, [navigate])
+
+    // Using local refs within ReelFeed; keeping map here for dependency parity if needed
+
+    async function likeVideo(item) {
+
+        const response = await axios.post("http://localhost:3000/api/food/like", { foodId: item._id }, { withCredentials: true })
+
+        if (response.data.like) {
+            console.log("Video liked");
+            setVideos((prev) => prev.map((v) => v._id === item._id ? { ...v, likeCount: v.likeCount + 1 } : v))
+        } else {
+            console.log("Video unliked");
+            setVideos((prev) => prev.map((v) => v._id === item._id ? { ...v, likeCount: v.likeCount - 1 } : v))
+        }
+
+    }
+
+    async function saveVideo(item) {
+        const response = await axios.post("http://localhost:3000/api/food/save", { foodId: item._id }, { withCredentials: true })
+
+        if (response.data.save) {
+            setVideos((prev) => prev.map((v) => v._id === item._id ? { ...v, savesCount: v.savesCount + 1 } : v))
+        } else {
+            setVideos((prev) => prev.map((v) => v._id === item._id ? { ...v, savesCount: v.savesCount - 1 } : v))
+        }
+    }
 
     return (
-        <div className="reels-container">
-            {MOCK_VIDEOS.map((video) => (
-                <div key={video.id} className="video-container">
-                    <video
-                        className="reel-video"
-                        src={video.url}
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                    ></video>
+        <ReelFeed
+            items={videos}
+            onLike={likeVideo}
+            onSave={saveVideo}
+            emptyMessage="No videos available."
+        />
+    )
+}
 
-                    <div className="video-overlay">
-                        <div className="store-name">@{video.storeName}</div>
-                        <div className="video-description">
-                            {video.description}
-                        </div>
-                        <button className="visit-store-btn">
-                            Visit Store
-                        </button>
-                    </div>
-                </div>
-            ))}
-        </div>
-    );
-};
-
-export default Home;
+export default Home
