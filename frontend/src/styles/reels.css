@@ -157,6 +157,15 @@
     transform: translateY(1px);
 }
 
+.reel-action.is-active {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+}
+
+.reel-action.is-active svg {
+    fill: var(--color-accent);
+}
+
 .reel-action__count {
     color: #fff;
     text-align: center;

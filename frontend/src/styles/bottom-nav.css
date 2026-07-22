@@ -34,7 +34,7 @@
 }
 
 .bottom-nav__item.is-active {
-    color: var(--color-text);
+    color: var(--color-accent);
 }
 
 .bottom-nav__icon {
